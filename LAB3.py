@@ -5,6 +5,10 @@ c = 0
 f = 0
 x = 100
 
+x_a = 1
+x_b = 4
+x = 4
+
 # wezly = np.array([[1, 0],
 #                   [2, 1],
 #                   [3, 0.5],
@@ -41,11 +45,13 @@ def genTABLICEGEO(x_a, x_b, x):
     return array, array2
 
 
-wezly,elementy = genTABLICEGEO(1,4,4)
+wezly,elementy = genTABLICEGEO(x_a,x_b,x)
 print(wezly)
 print(elementy)
 
+plt.plot(wezly[:,1],np.zeros(x_b),marker='o')
+
 #plt.plot()
-#plt.show()
+plt.show()
 
 
