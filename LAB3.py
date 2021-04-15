@@ -5,8 +5,8 @@ c = 0
 f = 0
 
 x_a = 1
-x_b = 10
-x = 3
+x_b = 15
+x = 8 #ilosc wezlow
 
 
 
@@ -48,12 +48,23 @@ def genTABLICEGEO(x_a, x_b, x):
 
 
 wezly,elementy = genTABLICEGEO(x_a,x_b,x)
+
 print(wezly)
 print(elementy)
 
-plt.plot(wezly[:,1],np.zeros(x),marker='o')
+def rysuj(wezly):
+    y = np.zeros(wezly.shape[0])
 
-#plt.plot()
-plt.show()
+    plt.plot(wezly[:,1],y,marker='o')
+
+    for i in range(0, np.size(np.zeros(x)), 1):  #wezly
+        plt.text(x = wezly[i, 1], y = y[i] - 0.007, s = (wezly[i, 0]), fontsize=7, color = 'green')
+
+    for i in range(0, np.size(y) - 1, 1):  # podpis elementow
+        plt.text(x = (wezly[i, 1] + wezly[i + 1, 1]) / 2, y = y[i] + 0.003, s = int(i + 1), fontsize = 7, color = 'blue')
 
 
+
+    plt.show()
+
+rysuj(wezly)
