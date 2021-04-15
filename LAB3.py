@@ -33,7 +33,7 @@ def genTABLICEGEO(x_a, x_b, x):
             [i+1, i * temp + x_a],
         ])
 
-    for i in range(1, x, 1):
+    for i in range(2, x, 1):
         array2 = np.block([
             [array2],
             [i, i, i + 1]
@@ -41,10 +41,11 @@ def genTABLICEGEO(x_a, x_b, x):
     return array, array2
 
 
-wezly,elementy = genTABLICEGEO(1,10,5)
+wezly,elementy = genTABLICEGEO(1,4,4)
 print(wezly)
 print(elementy)
 
-
+#plt.plot()
+#plt.show()
 
 
