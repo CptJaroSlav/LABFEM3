@@ -1,6 +1,18 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-def [parametry_sterujace] = inicjalizacja_parametrow_sterujacych(PRZEDZIAL, WAR_BRZEGOWE, RODZ_WAR_BRZEG)
 
-def [definicja_geometrii] = definicja_parametrow_geo_i_fiz(PRZEDZIAL, G_WEZLY, c,f)
+wezly = np.array([[1, 0],
+                  [2, 1],
+                  [3, 0.5],
+                  [4, 0.75]])
+
+elementy = np.array([[1, 1, 3],
+                     [2, 4, 2],
+                     [3, 3, 4]])
+
+twb_L = 'D'
+twb_R = 'D'
+
+wwb_L = 0
+wwb_R = 1
