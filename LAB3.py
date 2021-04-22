@@ -2,11 +2,11 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 c = 0
-f = 0
+f = lambda x: 0*x #wymuszenie
 
-x_a = 0
-x_b = 1
-x = 8 #ilosc wezlow
+x_a = 4
+x_b = 10
+x = 7 #ilosc wezlow NODES
 
 twb_L = 'D'
 twb_R = 'D'
@@ -14,23 +14,8 @@ twb_R = 'D'
 wwb_L = 0
 wwb_R = 1
 
-
-
-# wezly = np.array([[1, 0],
-#                   [2, 1],
-#                   [3, 0.5],
-#                   [4, 0.75]])
-#
-# elementy = np.array([[1, 1, 3],
-#                      [2, 4, 2],
-#                      [3, 3, 4]])
-#
-# twb_L = 'D'
-# twb_R = 'D'
-#
-# wwb_L = 0
-# wwb_R = 1
-
+WB = [{"ind":1, "typ":'D', "wartosc":1},
+      {"ind":2, "typ":'D', "wartosc":2}]
 
 def genTABLICEGEO(x_a, x_b, x):
 
@@ -73,3 +58,24 @@ def rysuj(wezly):
     plt.show()
 
 rysuj(wezly)
+
+def Alokacja(x):
+    tmp = (x,x)
+    tmp1 = (x,1)
+    A = np.zeros(tmp)
+    b = np.zeros(tmp1)
+    return A, b
+
+A,b = Alokacja(x)
+
+print(A)
+print(b)
+
+
+#def Bazowa(x):
+
+
+
+
+
+
