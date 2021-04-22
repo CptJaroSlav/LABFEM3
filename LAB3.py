@@ -4,10 +4,15 @@ import matplotlib.pyplot as plt
 c = 0
 f = 0
 
-x_a = 1
-x_b = 15
+x_a = 0
+x_b = 1
 x = 8 #ilosc wezlow
 
+twb_L = 'D'
+twb_R = 'D'
+
+wwb_L = 0
+wwb_R = 1
 
 
 
@@ -64,7 +69,7 @@ def rysuj(wezly):
         plt.text(x = (wezly[i, 1] + wezly[i + 1, 1]) / 2, y = y[i] + 0.003, s = int(i + 1), fontsize = 7, color = 'blue')
 
 
-
+    plt.grid(True)
     plt.show()
 
 rysuj(wezly)
