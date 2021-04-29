@@ -153,7 +153,59 @@ for ee in np.arange(0,liczbaElementow):
         A[np.ix_(indGlobalneWezlow - 1, indGlobalneWezlow - 1)] + Ml
 
 
-    
+    #Uwzględnienie warunków brzegowych
+
+    if WB[0]['typ'] == 'D':
+        ind_wezla = WB[0]['ind']
+        wart_war_brzeg = WB[0]['wartosc']
+
+        iwp = ind_wezla-1
+
+        WZMACNIACZ = 10**14
+
+        b[iwp] = A[iwp,iwp]*WZMACNIACZ*wart_war_brzeg
+        A[iwp,iwp] = A[iwp,iwp]*WZMACNIACZ
+
+    if WB[1]['typ'] == 'D':
+        ind_wezla = WB[1]['ind']
+        wart_war_brzeg = WB[1]['wartosc']
+
+        iwp = ind_wezla - 1
+
+        WZMACNIACZ = 10**14
+
+        b[iwp] = A[iwp, iwp] * WZMACNIACZ * wart_war_brzeg
+        A[iwp, iwp] = A[iwp, iwp] * WZMACNIACZ
+
+
+    if WB[0]['typ'] == 'N':
+        print("Nie zaimplementowano")
+
+    if WB[1]['typ'] == 'N':
+        print("Nie zaimplementowano")
+
+    print(A)
+    print(b)
+
+    #Rozw liniowych
+
+    u = np.linalg.solve(A,b)
+
+    def RysujRozwiaznie(WEZLY, ELEMENTY, WB, u):
+
+        rysuj(wezly)
+
+        x = NODES[:,1]
+        y = u
+
+        plt.plot(x,u,'m*')
+
+    RysujRozwiaznie(wezly, elementy, WB, u)
+
+
+
+
+
 
 
 
