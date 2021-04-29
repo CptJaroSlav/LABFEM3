@@ -111,12 +111,13 @@ liczbaElementow = np.shape(elementy)[0]
 for ee in np.arange(0,liczbaElementow):
 
     elemRowInd = ee
-    elemGlobalInd = elemety[ee,0]
+    elemGlobalInd = elementy[ee,0]
 
-    elemWezel1 = elemety[ee,1]  #indeks wezla poczatkowego elementu ee
-    elemWezel2 = elemety[ee, 2] # indeks wezla koncowego elementu ee
+    elemWezel1 = elementy[ee,1]  #indeks wezla poczatkowego elementu ee
+    elemWezel2 = elementy[ee,2] # indeks wezla koncowego elementu ee
+    indGlobalneWezlow = np.array([elemWezel1, elemWezel2])
 
-    Ml = np.zeros(stopien_funkcji_bazowych + 1, stopien_funkcji_bazowych + 1)
+    Ml = np.zeros([stopien_funkcji_bazowych + 1, stopien_funkcji_bazowych + 1])
 
     def Aij(df_i, df_j, c, f_i, f_j):
 
@@ -129,7 +130,35 @@ for ee in np.arange(0,liczbaElementow):
 
     J = (p_b-p_a)/2
 
-    Ml[0,0] = J * spint.quad(Aij(dphi[0],dphi[0],c,phi[0],phi[0]),-1,1)
+    m = 0;
+    n = 0;
+
+    Ml[m,n] = J * spint.quad(Aij(dphi[m],dphi[n],c,phi[m],phi[n]),-1,1)[0]
+
+    m = 0;
+    n = 1;
+    Ml[m,n] = J * spint.quad(Aij(dphi[m], dphi[n], c, phi[m], phi[n]), -1, 1)[0]
+
+    m = 1;
+    n = 0;
+    Ml[m, n] = J * spint.quad(Aij(dphi[m], dphi[n], c, phi[m], phi[n]), -1, 1)[0]
+
+    m = 1;
+    n = 1;
+    Ml[m, n] = J * spint.quad(Aij(dphi[m], dphi[n], c, phi[m], phi[n]), -1, 1)[0]
+
+
+
+    A[np.ix_(indGlobalneWezlow-1, indGlobalneWezlow-1)] = \
+        A[np.ix_(indGlobalneWezlow - 1, indGlobalneWezlow - 1)] + Ml
+
+
+    
+
+
+
+
+
 
 
 
