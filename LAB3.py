@@ -6,7 +6,7 @@ f = lambda x: 0*x #wymuszenie
 
 x_a = 0
 x_b = 1
-x = 5 #ilosc wezlow NODES
+x = 8 #ilosc wezlow NODES
 
 twb_L = 'D'
 twb_R = 'D'
@@ -107,6 +107,13 @@ plt.show()
 
 #Preprocesing
 
+def Aij(df_i, df_j, c, f_i, f_j):
+
+    fun_podc = lambda x: -df_i(x)*df_j(x) + c * f_i(x)*f_j(x)
+
+    return fun_podc
+
+
 liczbaElementow = np.shape(elementy)[0]
 for ee in np.arange(0,liczbaElementow):
 
@@ -117,13 +124,9 @@ for ee in np.arange(0,liczbaElementow):
     elemWezel2 = elementy[ee,2] # indeks wezla koncowego elementu ee
     indGlobalneWezlow = np.array([elemWezel1, elemWezel2])
 
-    Ml = np.zeros([stopien_funkcji_bazowych + 1, stopien_funkcji_bazowych + 1])
+    Ml = np.zeros((stopien_funkcji_bazowych + 1, stopien_funkcji_bazowych + 1))
+#!!!
 
-    def Aij(df_i, df_j, c, f_i, f_j):
-
-        fun_podc = lambda x: -df_i(x)*df_j(x) + c * f_i(x)*f_j(x)
-
-        return fun_podc
 
     p_a = wezly[elemWezel1-1,1]
     p_b = wezly[elemWezel2-1,1]
@@ -155,52 +158,54 @@ for ee in np.arange(0,liczbaElementow):
 
     #Uwzględnienie warunków brzegowych
 
-    if WB[0]['typ'] == 'D':
-        ind_wezla = WB[0]['ind']
-        wart_war_brzeg = WB[0]['wartosc']
+if WB[0]['typ'] == 'D':
+    ind_wezla = WB[0]['ind']
+    wart_war_brzeg = WB[0]['wartosc']
 
-        iwp = ind_wezla-1
+    iwp = ind_wezla-1
 
-        WZMACNIACZ = 10**14
+    WZMACNIACZ = 10**14
 
-        b[iwp] = A[iwp,iwp]*WZMACNIACZ*wart_war_brzeg
-        A[iwp,iwp] = A[iwp,iwp]*WZMACNIACZ
+    b[iwp] = A[iwp,iwp]*WZMACNIACZ*wart_war_brzeg
+    A[iwp,iwp] = A[iwp,iwp]*WZMACNIACZ
 
-    if WB[1]['typ'] == 'D':
-        ind_wezla = WB[1]['ind']
-        wart_war_brzeg = WB[1]['wartosc']
+if WB[1]['typ'] == 'D':
+    ind_wezla = WB[1]['ind']
+    wart_war_brzeg = WB[1]['wartosc']
 
-        iwp = ind_wezla - 1
+    iwp = ind_wezla - 1
 
-        WZMACNIACZ = 10**14
+    WZMACNIACZ = 10**14
 
-        b[iwp] = A[iwp, iwp] * WZMACNIACZ * wart_war_brzeg
-        A[iwp, iwp] = A[iwp, iwp] * WZMACNIACZ
+    b[iwp] = A[iwp, iwp] * WZMACNIACZ * wart_war_brzeg
+    A[iwp, iwp] = A[iwp, iwp] * WZMACNIACZ
 
 
-    if WB[0]['typ'] == 'N':
-        print("Nie zaimplementowano")
+if WB[0]['typ'] == 'N':
+    print("Nie zaimplementowano")
 
-    if WB[1]['typ'] == 'N':
-        print("Nie zaimplementowano")
+if WB[1]['typ'] == 'N':
+    print("Nie zaimplementowano")
 
-    print(A)
-    print(b)
+print(A)
+print(b)
 
     #Rozw liniowych
 
-    u = np.linalg.solve(A,b)
+u = np.linalg.solve(A,b)
 
-    def RysujRozwiaznie(WEZLY, ELEMENTY, WB, u):
+def RysujRozwiaznie(WEZLY, ELEMENTY, WB, u):
 
-        rysuj(wezly)
+    #rysuj(wezly)
 
-        x = NODES[:,1]
-        y = u
+    x = wezly[:,1]
+    y = u
 
-        plt.plot(x,u,'m*')
+    plt.plot(x,u,'m*')
+    plt.show()
 
-    RysujRozwiaznie(wezly, elementy, WB, u)
+RysujRozwiaznie(wezly, elementy, WB, u)
+
 
 
 
