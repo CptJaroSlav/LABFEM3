@@ -4,12 +4,12 @@ import scipy.integrate as spint
 c = 0
 f = lambda x: 0*x #wymuszenie
 
-x_a = 0
-x_b = 1
-x = 8 #ilosc wezlow NODES
+x_a = 0 #początek elementu
+x_b = 1 #koniec elementu
+x = 4 #ilosc wezlow NODES
 
-twb_L = 'D'
-twb_R = 'D'
+twb_L = 'D' #warunki brzegowe
+twb_R = 'D' #warunki brzegowe
 
 wwb_L = 0
 wwb_R = 1
@@ -53,10 +53,8 @@ def rysuj(wezly):
     for i in range(0, np.size(y) - 1, 1):  # podpis elementow
         plt.text(x = (wezly[i, 1] + wezly[i + 1, 1]) / 2, y = y[i] + 0.003, s = int(i + 1), fontsize = 7, color = 'blue')
 
-
     plt.grid(True)
     plt.show()
-
 rysuj(wezly)
 
 def Alokacja(x):
@@ -85,9 +83,16 @@ def FunkcjeBazowe(x):
         f = (lambda x: -1/2*x + 1/2, lambda x: 0.5*x + 0.5)
         df = (lambda x: -1/2 + 0 * x, lambda x: 0.5 + 0 * x )
 
-    #elif n==2:
+    elif x==2:
 
-        #f = (lambda,lambda,lambda)
+        f = (lambda x:-1/2*(1-x**2) ,lambda x:-1/2*(1-x**2),lambda x:1-x**2)
+        df = (lambda x: x, lambda x: x, lambda x: -2*x)
+
+    #elif x==3:
+
+        #f = (lambda x:1/16*(-9*x**3+x**2+9*x-1) ,lambda x:1/16*(9*x**3+x**2-9*x-1),lambda x:1/16*(27*x**3+7*x**2-27*x-7), lambda x:1/16*(-27*x**3-9*x**2+27*x+9))
+        #df =
+
     else:
         raise Exception("Błąd")
 
@@ -101,8 +106,11 @@ print(dphi)
 xx = np.linspace(-1,1,101)
 plt.plot(xx,phi[0](xx),'r')
 plt.plot(xx,phi[1](xx),'g')
+#plt.plot(xx,phi[2](xx),'g')
 plt.plot(xx,dphi[0](xx),'b')
 plt.plot(xx,dphi[1](xx),'c')
+#plt.plot(xx,dphi[2](xx),'c')
+plt.grid(True)
 plt.show()
 
 #Preprocesing
@@ -130,29 +138,33 @@ for ee in np.arange(0,liczbaElementow):
 
     p_a = wezly[elemWezel1-1,1]
     p_b = wezly[elemWezel2-1,1]
-
     J = (p_b-p_a)/2
 
-    m = 0;
-    n = 0;
+    for m in range(stopien_funkcji_bazowych + 1):
+        for n in range(stopien_funkcji_bazowych + 1):
+            Ml[m, n] = J * spint.quad(Aij(dphi[m], dphi[n], c, phi[m], phi[n]), -1, 1)[0]
 
-    Ml[m,n] = J * spint.quad(Aij(dphi[m],dphi[n],c,phi[m],phi[n]),-1,1)[0]
+    #Macierz lokalna generowana ręcznie
+    # m = 0;
+    # n = 0;
+    #
+    # Ml[m,n] = J * spint.quad(Aij(dphi[m],dphi[n],c,phi[m],phi[n]),-1,1)[0]
+    #
+    # m = 0;
+    # n = 1;
+    # Ml[m,n] = J * spint.quad(Aij(dphi[m], dphi[n], c, phi[m], phi[n]), -1, 1)[0]
+    #
+    # m = 1;
+    # n = 0;
+    # Ml[m, n] = J * spint.quad(Aij(dphi[m], dphi[n], c, phi[m], phi[n]), -1, 1)[0]
+    #
+    # m = 1;
+    # n = 1;
+    # Ml[m, n] = J * spint.quad(Aij(dphi[m], dphi[n], c, phi[m], phi[n]), -1, 1)[0]
 
-    m = 0;
-    n = 1;
-    Ml[m,n] = J * spint.quad(Aij(dphi[m], dphi[n], c, phi[m], phi[n]), -1, 1)[0]
-
-    m = 1;
-    n = 0;
-    Ml[m, n] = J * spint.quad(Aij(dphi[m], dphi[n], c, phi[m], phi[n]), -1, 1)[0]
-
-    m = 1;
-    n = 1;
-    Ml[m, n] = J * spint.quad(Aij(dphi[m], dphi[n], c, phi[m], phi[n]), -1, 1)[0]
 
 
-
-    A[np.ix_(indGlobalneWezlow-1, indGlobalneWezlow-1)] = \
+    A[np.ix_(indGlobalneWezlow - 1, indGlobalneWezlow - 1)] = \
         A[np.ix_(indGlobalneWezlow - 1, indGlobalneWezlow - 1)] + Ml
 
 
