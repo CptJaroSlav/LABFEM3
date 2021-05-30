@@ -38,8 +38,9 @@ def genTABLICEGEO(x_a, x_b, x):
 
 
 wezly,elementy = genTABLICEGEO(x_a,x_b,x)
-
+print("Tabela wezlow")
 print(wezly)
+print("Tabela elementow")
 print(elementy)
 
 def rysuj(wezly):
@@ -66,7 +67,9 @@ def Alokacja(x):
 
 A,b = Alokacja(x)
 
+print("Macierz A")
 print(A)
+print("Macierz b")
 print(b)
 
 
@@ -133,13 +136,11 @@ for ee in np.arange(0,liczbaElementow):
     indGlobalneWezlow = np.array([elemWezel1, elemWezel2])
 
     Ml = np.zeros((stopien_funkcji_bazowych + 1, stopien_funkcji_bazowych + 1))
-#!!!
-
 
     p_a = wezly[elemWezel1-1,1]
     p_b = wezly[elemWezel2-1,1]
-    J = (p_b-p_a)/2
-
+    J = (p_b-p_a)/2 #Jakobian przekształcenia przedziału
+    #Macierz lokalna generowana automatycznie
     for m in range(stopien_funkcji_bazowych + 1):
         for n in range(stopien_funkcji_bazowych + 1):
             Ml[m, n] = J * spint.quad(Aij(dphi[m], dphi[n], c, phi[m], phi[n]), -1, 1)[0]
@@ -162,14 +163,17 @@ for ee in np.arange(0,liczbaElementow):
     # n = 1;
     # Ml[m, n] = J * spint.quad(Aij(dphi[m], dphi[n], c, phi[m], phi[n]), -1, 1)[0]
 
+    if stopien_funkcji_bazowych == 2:
+         A[np.ix_(indGlobalneWezlow - 1, indGlobalneWezlow - 1)] = \
+            A[np.ix_(indGlobalneWezlow - 1, indGlobalneWezlow - 1)] + Ml[-1:,-1:]
+    elif stopien_funkcji_bazowych == 1:
+        A[np.ix_(indGlobalneWezlow - 1, indGlobalneWezlow - 1)] = \
+            A[np.ix_(indGlobalneWezlow - 1, indGlobalneWezlow - 1)] + Ml
 
+print("Macierz lokalna")
+print(Ml)
 
-    A[np.ix_(indGlobalneWezlow - 1, indGlobalneWezlow - 1)] = \
-        A[np.ix_(indGlobalneWezlow - 1, indGlobalneWezlow - 1)] + Ml
-
-
-    #Uwzględnienie warunków brzegowych
-
+#Uwzględnienie warunków brzegowych
 if WB[0]['typ'] == 'D':
     ind_wezla = WB[0]['ind']
     wart_war_brzeg = WB[0]['wartosc']
@@ -198,25 +202,30 @@ if WB[0]['typ'] == 'N':
 
 if WB[1]['typ'] == 'N':
     print("Nie zaimplementowano")
-
+    
+print("Macierz A")
 print(A)
+print("Macierz b")
 print(b)
 
-    #Rozw liniowych
+#Rozw liniowych
 
 u = np.linalg.solve(A,b)
 
+print(u)
+
 def RysujRozwiaznie(WEZLY, ELEMENTY, WB, u):
 
-    #rysuj(wezly)
-
+    rysuj(WEZLY)
     x = wezly[:,1]
     y = u
-
+    y = np.ones(wezly.shape[0])
+    plt.plot(wezly[:, 1], y, marker='o')
     plt.plot(x,u,'m*')
     plt.show()
 
 RysujRozwiaznie(wezly, elementy, WB, u)
+print(A)
 
 
 
