@@ -6,7 +6,7 @@ f = lambda x: 0*x #wymuszenie
 
 x_a = 0 #początek elementu
 x_b = 1 #koniec elementu
-x = 4 #ilosc wezlow NODES
+x = 20 #ilosc wezlow NODES
 
 twb_L = 'D' #warunki brzegowe
 twb_R = 'D' #warunki brzegowe
@@ -88,8 +88,11 @@ def FunkcjeBazowe(x):
 
     elif x==2:
 
-        f = (lambda x:-1/2*(1-x**2) ,lambda x:-1/2*(1-x**2),lambda x:1-x**2)
-        df = (lambda x: x, lambda x: x, lambda x: -2*x)
+        f = (lambda x: 1 / 2 * x * (x - 1), lambda x: -x ** 2 + 1, lambda x: 1 / 2 * x * (x + 1))
+        df = (lambda x: x - 1 / 2, lambda x: -2 * x, lambda x: x + 1 / 2)
+
+        #f = (lambda x:-1/2*(1-x**2) ,lambda x:-1/2*(1-x**2),lambda x:1-x**2)
+        #df = (lambda x: x, lambda x: x, lambda x: -2*x)
 
     #elif x==3:
 
@@ -100,7 +103,7 @@ def FunkcjeBazowe(x):
         raise Exception("Błąd")
 
     return f,df
-stopien_funkcji_bazowych = 1
+stopien_funkcji_bazowych = 2
 phi,dphi = FunkcjeBazowe(stopien_funkcji_bazowych)
 
 print(phi)
@@ -109,10 +112,10 @@ print(dphi)
 xx = np.linspace(-1,1,101)
 plt.plot(xx,phi[0](xx),'r')
 plt.plot(xx,phi[1](xx),'g')
-#plt.plot(xx,phi[2](xx),'g')
+plt.plot(xx,phi[2](xx),'g')
 plt.plot(xx,dphi[0](xx),'b')
 plt.plot(xx,dphi[1](xx),'c')
-#plt.plot(xx,dphi[2](xx),'c')
+plt.plot(xx,dphi[2](xx),'c')
 plt.grid(True)
 plt.show()
 
@@ -165,7 +168,8 @@ for ee in np.arange(0,liczbaElementow):
 
     if stopien_funkcji_bazowych == 2:
          A[np.ix_(indGlobalneWezlow - 1, indGlobalneWezlow - 1)] = \
-            A[np.ix_(indGlobalneWezlow - 1, indGlobalneWezlow - 1)] + Ml[-1:,-1:]
+            A[np.ix_(indGlobalneWezlow - 1, indGlobalneWezlow - 1)] + Ml[:-1,:-1]
+
     elif stopien_funkcji_bazowych == 1:
         A[np.ix_(indGlobalneWezlow - 1, indGlobalneWezlow - 1)] = \
             A[np.ix_(indGlobalneWezlow - 1, indGlobalneWezlow - 1)] + Ml
@@ -202,7 +206,7 @@ if WB[0]['typ'] == 'N':
 
 if WB[1]['typ'] == 'N':
     print("Nie zaimplementowano")
-    
+
 print("Macierz A")
 print(A)
 print("Macierz b")
